@@ -1,0 +1,120 @@
+---
+title: A Machine Learning Tutorial
+date: '2024-04-03'
+tags: ['code', 'guide']
+draft: false
+summary: A Overview of Machine Learning Using Pytorch and Sklearn
+---
+
+## Introduction
+
+    Pytorch and Sklearn are two open-source packages which contain a variety of tools to conduct data analysis and utilize machine learning. 
+This webpage will cover the process of utilizing these packages, as well as explaining the underlying calculations.
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## Setup
+
+Note that this section will cover material similar to the first paper
+
+### Importing packages
+
+Import the required packages with the following
+
+```python
+import Sklearn as sk
+import Pytorch as pt
+import Pandas as pd
+import Numpy as np
+```
+
+
+
+
+
+## Model Classification
+
+The **Sklearn** package provides a large variety of tools for the purposes of classification, regression, clustering, dimensionality reduction, etc. 
+It primarily cateogrizes models based on whether they are supervised or not. Some models of note include the following:
+
+Supervised
+ - Ordinary Least Squares: A regression model which attempts to fit a linear model to the data. Requires independence of features.
+ - Logistic Regression: A classification model. In the multinomial case the model is capable of fitting up to an arbitrary K classes. 
+ - Support Vector Machine (SVM): Used for classification, regression, and outlier detection. Effective in high dimensional spaces (many features).
+ - K-Nearest Neighbor: Used for classification and regression. Effective in cases where data is continuous
+
+Unsupervised
+ - K-Means: A clustering algorithim. Attempts to seperate data into an arbitrary N clusters
+ - Principle Component Analysis: Used for dimensionality reduction. Finds N orthogonal components that explain the maximum amount of variance.
+
+
+The **Pytorch** package provides the necessary tools to built a Neural Network layer by layer, 
+as such it is up to the user to determine what is necessary for the type of Neural Network they intend to design.  
+
+
+## Linear Regression
+
+### Parameters
+
+
+### Example
+
+Some Python code 🐍
+
+```python
+def fib():
+    a, b = 0, 1
+    while True:            # First iteration:
+        yield a            # yield 0 to start with and then
+        a, b = b, a + b    # a will now be 1, and b will also be 1, (0 + 1)
+
+for index, fibonacci_number in zip(range(10), fib()):
+     print('{i:3}: {f:3}'.format(i=index, f=fibonacci_number))
+```
+
+## Logistic Regression
+
+### Parameters
+
+
+### Example
+
+## Support Vector Machine (SVM)
+
+### Parameters
+
+
+### Example
+
+## K-Nearest Neighbor
+
+### Parameters
+
+
+### Example
+
+## K-Means
+
+### Parameters
+
+
+### Example
+
+## Principle Component Analysis (PCA)
+
+### Parameters
+
+
+### Example
+
+## Neural Networks
+
+### Parameters
+
+
+### Example
+
+
+
+## References
+Model Classification: https://www.datacamp.com/blog/classification-machine-learning
