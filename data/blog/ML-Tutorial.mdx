@@ -16,18 +16,7 @@ This webpage will cover the process of utilizing these packages, as well as expl
 
 ## Setup
 
-Note that this section will cover material similar to the first paper
-
-### Importing packages
-
-Import the required packages with the following
-
-```python
-import Sklearn as sk
-import Pytorch as pt
-import Pandas as pd
-import Numpy as np
-```
+See previous paper for information on setup
 
 ## Model Classification
 
@@ -46,15 +35,18 @@ Unsupervised
 - K-Means: A clustering algorithim. Attempts to seperate data into an arbitrary N clusters
 - Principle Component Analysis: Used for dimensionality reduction. Finds N orthogonal components that explain the maximum amount of variance.
 
+Note that Sklearn provides too many models and tools to be listed here. For a full list see the following: https://scikit-learn.org/stable/supervised_learning.html
+
 The **Pytorch** package provides the necessary tools to built a Neural Network layer by layer,
 as such it is up to the user to determine what is necessary for the type of Neural Network they intend to design.
+Neural Networks can be either fall under supervised or unsupervised learning based on whether or not the data is labeled.
+Additionally, whether the model is used for classification or regression is also based on how the model is built.
 
 ## Linear Regression
 
 ### Parameters
 
 ### Example
-
 
 ```python
 lindf = df.filter(df.columns[7:10]).dropna(how='any')
@@ -115,7 +107,7 @@ preds = model1.predict(X_test)
 
 ```python
 from sklearn import neighbors
-from sklearn.metrics import mean_squared_error 
+from sklearn.metrics import mean_squared_error
 from math import sqrt
 import matplotlib.pyplot as plt
 
@@ -131,7 +123,6 @@ for K in range(20):
     rmse_val.append(error) #store rmse values
     print('RMSE value for k= ' , K , 'is:', error)
 ```
-
 
 ## Random Forest
 
@@ -190,9 +181,66 @@ np.mean(mape)
 ### Example
 
 ```python
+import torch
+from torch.utils.data import Dataset, DataLoader
+from torch import nn
+from torch import optim
+# Define class that converts data to torch tensors
+class Data(Dataset):
+ def __init__(self, X, y):
+ self.X = torch.from_numpy(X.astype(np.float32))
+ self.y = torch.from_numpy(y.astype(np.float32))
+ self.len = self.X.shape[0]
 
+ def __getitem__(self, index):
+ return self.X[index], self.y[index]
+
+ def __len__(self):
+ return self.len
+
+batch_size = 16
+# Prepare testing and training data for input into the neural network (NN)
+train_data = Data(X_train, y_train)
+train_dataloader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
+test_data = Data(X_test, y_test)
+test_dataloader = DataLoader(dataset=test_data, batch_size=batch_size, shuffle=True)
+input_dim = 21
+hidden_dim = 100
+output_dim = 166
+# Define the NN
+class NeuralNetwork(nn.Module):
+ def __init__(self, input_dim, hidden_dim, output_dim):
+ super(NeuralNetwork, self).__init__()
+ self.layer_1 = nn.Linear(input_dim, hidden_dim)
+ nn.init.kaiming_uniform_(self.layer_1.weight, nonlinearity="relu")
+ self.layer_2 = nn.Linear(hidden_dim, output_dim)
+
+ def forward(self, x):
+ x = torch.nn.functional.relu(self.layer_1(x))
+ x = torch.nn.functional.sigmoid(self.layer_2(x))
+ return x
+# Initialize NN
+model = NeuralNetwork(input_dim, hidden_dim, output_dim)
+# Setup Loss function and Stochastic Gradient Descent function
+loss_fn = nn. MSELoss()
+optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+num_epochs = 100
+loss_values = []
+for epoch in range(num_epochs):
+ for X, y in train_dataloader:
+ # zero the parameter gradients
+ optimizer.zero_grad()
+
+ # forward + backward + optimize
+ pred = model(X)
+ loss = loss_fn(pred, y.type(torch.LongTensor))
+ loss_values.append(loss.item())
+ loss.backward()
+ optimizer.step()
 ```
 
 ## References
+
+Data Used: https://apps.who.int/nha/database/Select/Indicators/en
 
 Model Classification: https://www.datacamp.com/blog/classification-machine-learning
