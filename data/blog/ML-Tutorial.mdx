@@ -8,7 +8,8 @@ summary: A Overview of Machine Learning Using Pytorch and Sklearn
 
 ## Introduction
 
-    Pytorch and Sklearn are two open-source packages which contain a variety of tools to conduct data analysis and utilize machine learning. 
+    Pytorch and Sklearn are two open-source packages which contain a variety of tools to conduct data analysis and utilize machine learning.
+
 This webpage will cover the process of utilizing these packages, as well as explaining the underlying calculations.
 
 <TOCInline toc={props.toc} exclude="Introduction" />
@@ -28,34 +29,29 @@ import Pandas as pd
 import Numpy as np
 ```
 
-
-
-
-
 ## Model Classification
 
-The **Sklearn** package provides a large variety of tools for the purposes of classification, regression, clustering, dimensionality reduction, etc. 
+The **Sklearn** package provides a large variety of tools for the purposes of classification, regression, clustering, dimensionality reduction, etc.
 It primarily cateogrizes models based on whether they are supervised or not. Some models of note include the following:
 
 Supervised
- - Ordinary Least Squares: A regression model which attempts to fit a linear model to the data. Requires independence of features.
- - Logistic Regression: A classification model. In the multinomial case the model is capable of fitting up to an arbitrary K classes. 
- - Support Vector Machine (SVM): Used for classification, regression, and outlier detection. Effective in high dimensional spaces (many features).
- - K-Nearest Neighbor: Used for classification and regression. Effective in cases where data is continuous
+
+- Ordinary Least Squares: A regression model which attempts to fit a linear model to the data. Requires independence of features.
+- Logistic Regression: A classification model. In the multinomial case the model is capable of fitting up to an arbitrary K classes.
+- Support Vector Machine (SVM): Used for classification, regression, and outlier detection. Effective in high dimensional spaces (many features).
+- K-Nearest Neighbor: Used for classification and regression. Effective in cases where data is continuous
 
 Unsupervised
- - K-Means: A clustering algorithim. Attempts to seperate data into an arbitrary N clusters
- - Principle Component Analysis: Used for dimensionality reduction. Finds N orthogonal components that explain the maximum amount of variance.
 
+- K-Means: A clustering algorithim. Attempts to seperate data into an arbitrary N clusters
+- Principle Component Analysis: Used for dimensionality reduction. Finds N orthogonal components that explain the maximum amount of variance.
 
-The **Pytorch** package provides the necessary tools to built a Neural Network layer by layer, 
-as such it is up to the user to determine what is necessary for the type of Neural Network they intend to design.  
-
+The **Pytorch** package provides the necessary tools to built a Neural Network layer by layer,
+as such it is up to the user to determine what is necessary for the type of Neural Network they intend to design.
 
 ## Linear Regression
 
 ### Parameters
-
 
 ### Example
 
@@ -74,8 +70,40 @@ for index, fibonacci_number in zip(range(10), fib()):
 
 ## Logistic Regression
 
+'''python
+mlrdf = df.filter(data.columns[3:7])
+mlrdf = mlrdf.dropna(how='any')
+X = mlrdf.filter(mlrdf.columns[1:4])
+
+# Factorize string to get values
+
+y = pd.factorize(mlrdf.iloc[:,0])[0] + 1
+
+# Import requires libraries
+
+import sklearn
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size = 0.20, random_state = 5)
+
+# if there is a problem with convergence try either normalizing data with sklearn's standardscaler or by increasing maxiter
+
+model1 = LogisticRegression(random_state=0, multi_class='multinomial',
+solver='lbfgs', max_iter=1000).fit(X_train, y_train)
+preds = model1.predict(X_test)
+'''
+
 ### Parameters
 
+Parameters of interest for LogisticRegression() are the following:
+
+- multi_class (default: ‘auto’): Defines whether the problem is binary. By default, this is
+  automatically detected. To explicitly state the problem is binomial set to ‘ovr’, to state the
+  problem is multinomial set as ‘multinomial’
+- solver (default: ‘lbfgd’): defines the algorithm being used. See documentation for a list of
+  algorithms: https://scikitlearn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+- max_iter (default: 1000): the maximum number of iterations for the solver to converge.
+- random_state (default: None): Same as in test_train_split()
 
 ### Example
 
@@ -83,13 +111,11 @@ for index, fibonacci_number in zip(range(10), fib()):
 
 ### Parameters
 
-
 ### Example
 
 ## K-Nearest Neighbor
 
 ### Parameters
-
 
 ### Example
 
@@ -97,13 +123,11 @@ for index, fibonacci_number in zip(range(10), fib()):
 
 ### Parameters
 
-
 ### Example
 
 ## Principle Component Analysis (PCA)
 
 ### Parameters
-
 
 ### Example
 
@@ -111,10 +135,8 @@ for index, fibonacci_number in zip(range(10), fib()):
 
 ### Parameters
 
-
 ### Example
 
-
-
 ## References
+
 Model Classification: https://www.datacamp.com/blog/classification-machine-learning
