@@ -86,7 +86,7 @@ Parameters of interest for LogisticRegression() are the following:
 Note other parameters exist, but are not as important as the above.
 For more information visit the documentation: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
 
-In terms of parameter tuning the most sensetive parameter is "solver".
+In terms of parameter tuning the only parameter that may require tuning is "solver".
 The supported solvers are as follows:
 
 - liblinear: good for small datasets, limited to one-vs-rest schemes
@@ -130,11 +130,13 @@ Parameters of interest for KNeighborsRegressor() are the following:
 - weights (default: ‘uniform’): when ‘uniform’ all points in a neighborhood are weighted equally. If set to ‘distance’ points are weight inversely to their distance.
 
 Note other parameters exist, but are not as important as the above.
-For more information visit the documentation: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+For more information visit the documentation: https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsRegressor.html
+In terms of parameter tuning the most sensitive parameters are "n_neighbors" and "weights".
 
-In terms of parameter tuning the most sensetive parameters are "n_neighbors" and "weights".
-Using 'distance' instead of 'uniform' often leads to more jagged predictions when used with a low 'n_neighbors' value.
-The value of 'n-neighbor' should be determined based on how sparse the data is, with highly clustered data using higher values.
+- Using 'distance' instead of 'uniform' often leads to more jagged predictions when used with a low 'n_neighbors' value.
+- The value of 'n-neighbor' should be determined based on how sparse the data is, with highly clustered data using higher values.
+
+In terms of tuning these parameters, using a visualization to determine how predicted data point(s) fit can help determine a optimal number of 'n_neighbors' and 'distance'.
 
 ### Example
 
@@ -164,7 +166,14 @@ for K in range(20):
 RandomForestRegressor() defines how the Random Forest Regressor model is built.
 Parameters of interest for RandomForestRegressor() are the following:
 
-- n\_ estimators (default: 100): the number of trees in the forest.
+- n_estimators (default: 100): the number of trees in the forest.
+
+Note other parameters exist, but are not as important as the above.
+For more information visit the documentation: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
+
+In terms of parameter tuning the most sensitive parameter is 'n_estimators'.
+
+- Generally a model performance improves as the number of trees increase, but at the cost of computation speed. It is up to the user to determine an acceptable middle ground between computational speed and accuracy.
 
 ### Example
 
@@ -246,7 +255,22 @@ Parameters of interest for DataLoader() are the following:
 - params (required): parameters being optimized.
 - lr (required): the learning rate.
 
-### Hyperparameter Tuning
+Note other parameters exist, but are not as important as the above.
+For more information visit the documentation: https://pytorch.org/docs/stable/index.html
+
+In terms of parameter tuning the most sensitive parameters are 'lr', the number of epochs (the number of times the optimizer is run), the number of layers and 'in_features'/'out_features' (the number of nodes per layer).
+
+- 'lr' or learning rate determines the step size taken by the optimizer, increasing it can lead to faster convergence but may cause overfitting.
+- More epochs will similarly improve performance, but can also cause overfitting
+- number of layers determines the complexity and ability for the model to learn.
+- number of nodes per layer determine the layer's capacity to represent relationships between nodes.
+
+To optimize these parameters it is suggested you use a hyperparameter tuning technique:
+
+- Bayesian Optimization: builds a probability model of the objective function and uses it to evaluate the hyperparameters.
+- Grid Search: Uses a grid containing a list of hyperparameters and a performance meteric going through each combination to determine what performs the best.
+- Random Search: Similar to grid search, but instead of every combination a random subset of combinations are examined.
+- Manual: Using a performance meteric, manually edit the hyperparameters until performance is optimized.
 
 ### Example
 
@@ -314,5 +338,7 @@ for epoch in range(num_epochs):
 Data Used: https://apps.who.int/nha/database/Select/Indicators/en
 
 Model documentation: https://scikit-learn.org/
+Neural Network documentation: https://pytorch.org/docs/stable/index.html
 Model Classification: https://www.datacamp.com/blog/classification-machine-learning
-Hyperparameter Tuning: https://aws.amazon.com/what-is/hyperparameter-tuning
+NN Hyperparameter Tuning: https://aws.amazon.com/what-is/hyperparameter-tuning
+Random Forest: https://builtin.com/data-science/random-forest-algorithm
