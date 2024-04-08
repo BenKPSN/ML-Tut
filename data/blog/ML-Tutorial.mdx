@@ -25,10 +25,11 @@ It primarily cateogrizes models based on whether they are supervised or not. Som
 
 Supervised
 
-- Ordinary Least Squares: A regression model which attempts to fit a linear model to the data. Requires independence of features.
+- Linear Regression: A regression model which attempts to fit a linear model to the data. Requires independence of features.
 - Logistic Regression: A classification model. In the multinomial case the model is capable of fitting up to an arbitrary K classes.
 - Support Vector Machine (SVM): Used for classification, regression, and outlier detection. Effective in high dimensional spaces (many features).
 - K-Nearest Neighbor: Used for classification and regression. Effective in cases where data is continuous
+- Random Forest: Used for classification and regression. Combines mutiple decision trees to reduce variance.
 
 Unsupervised
 
@@ -45,6 +46,15 @@ Additionally, whether the model is used for classification or regression is also
 ## Linear Regression
 
 ### Parameters
+
+Parameters of LinearRegression() are the following:
+
+- fit_intercept (default: True): Whether to calculate an intercept for the model. If False the data is expected to be centered.
+- copy_X (default: True): Creates a copy of the input X, otherwise data in X may be overwritten.
+- n_jobs (default: None): Determines the maximum number of CPUs are used by default None = 1. If set to -1 all CPUs are used.
+- positive (default: False): When True forces coefficients to be positive.
+
+None of the parameters in this model require tuning.
 
 ### Example
 
@@ -69,10 +79,20 @@ Parameters of interest for LogisticRegression() are the following:
 - multi_class (default: ‘auto’): Defines whether the problem is binary. By default, this is
   automatically detected. To explicitly state the problem is binomial set to ‘ovr’, to state the
   problem is multinomial set as ‘multinomial’
-- solver (default: ‘lbfgd’): defines the algorithm being used. See documentation for a list of
-  algorithms: https://scikitlearn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+- solver (default: ‘lbfgd’): defines the algorithm being used.
 - max_iter (default: 1000): the maximum number of iterations for the solver to converge.
 - random_state (default: None): Same as in test_train_split()
+
+Note other parameters exist, but are not as important as the above.
+For more information visit the documentation: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+
+In terms of parameter tuning the most sensetive parameter is "solver".
+The supported solvers are as follows:
+
+- liblinear: good for small datasets, limited to one-vs-rest schemes
+- sag, saga: good for larger datasets, uses fast convergence, can handle multinomial loss.
+- newton-cholesky: good for datasets with # of samples >> # of features.
+- lbfgs, newton-cg: good for larger datasets, can handle multinomial loss.
 
 ### Example
 
@@ -99,9 +119,22 @@ solver='lbfgs', max_iter=1000).fit(X_train, y_train)
 preds = model1.predict(X_test)
 ```
 
-## K-Nearest Neighbor
+## K-Nearest Neighbor Regressor
 
 ### Parameters
+
+KNeighborsRegressor() defines how the K-Nearest Neighbor model is built.
+Parameters of interest for KNeighborsRegressor() are the following:
+
+- n_neighbors (default: 5): the number of neighbors being used.
+- weights (default: ‘uniform’): when ‘uniform’ all points in a neighborhood are weighted equally. If set to ‘distance’ points are weight inversely to their distance.
+
+Note other parameters exist, but are not as important as the above.
+For more information visit the documentation: https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+
+In terms of parameter tuning the most sensetive parameters are "n_neighbors" and "weights".
+Using 'distance' instead of 'uniform' often leads to more jagged predictions when used with a low 'n_neighbors' value.
+The value of 'n-neighbor' should be determined based on how sparse the data is, with highly clustered data using higher values.
 
 ### Example
 
@@ -127,6 +160,11 @@ for K in range(20):
 ## Random Forest
 
 ### Parameters
+
+RandomForestRegressor() defines how the Random Forest Regressor model is built.
+Parameters of interest for RandomForestRegressor() are the following:
+
+- n\_ estimators (default: 100): the number of trees in the forest.
 
 ### Example
 
@@ -177,6 +215,38 @@ np.mean(mape)
 ## Neural Networks
 
 ### Parameters
+
+DataLoader() prepares the data into batches that can be reshuffled at each epoch (one iteration of training).
+Parameters of interest for DataLoader() are the following:
+
+- dataset (required): the data set from which to load data.
+- Batch_size (default: 1): The number of samples per batch.
+- Shuffle (default: True): Set True to reshuffle at every epoch.
+  nn.init.kaiming*uniform*() is one method of preparing the initial input tensors for the neural network to set initial
+  weights. See https://pytorch.org/docs/stable/nn.init.html for alternative methods.
+  Parameters of interest for nn.init.kaiming*uniform*() are the following:
+- tensor (required): an n-dimensional tensor.
+- nonlinearity (default: ‘leaky_relu’): Defines the activation function used. For this method the
+  only options are ‘leaky_relu’ or ‘relu’ (note: ‘relu’ is short for ‘rectified linear’)
+  nn.linear() applies a linear transformation on input data.
+  Parameters of interest for nn.linear() are the following:
+- in_features (required): size of input.
+- out_features (required): size of output
+  torch.nn.functional.relu(X) and torch.nn.functional.sigmoid(X) applies the rectified linear function/sigmoid
+  function elementwise onto the tensor X.
+  nn.MSELoss() is a loss function that computes the average of the squared differences between the actual and
+  predicted values.
+  Other loss functions of note include:
+- nn.L1loss() which uses the average of absolute differences.
+- nn.CrossEntropyLoss () which computes the difference of two probability distributions.
+- See the following for a full list: https://pytorch.org/docs/stable/nn.html#loss-functions
+  optim.SGD() implements stochastic gradient descent, an optimization algorithm that helps reduce the overall
+  computation time.
+  Parameters of interest for optim.SGD() are the following:
+- params (required): parameters being optimized.
+- lr (required): the learning rate.
+
+### Hyperparameter Tuning
 
 ### Example
 
@@ -243,4 +313,6 @@ for epoch in range(num_epochs):
 
 Data Used: https://apps.who.int/nha/database/Select/Indicators/en
 
+Model documentation: https://scikit-learn.org/
 Model Classification: https://www.datacamp.com/blog/classification-machine-learning
+Hyperparameter Tuning: https://aws.amazon.com/what-is/hyperparameter-tuning
