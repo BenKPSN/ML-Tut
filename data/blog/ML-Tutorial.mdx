@@ -10,13 +10,14 @@ summary: A Overview of Machine Learning Using Pytorch and Sklearn
 
     Pytorch and Sklearn are two open-source packages which contain a variety of tools to conduct data analysis and utilize machine learning.
 
-This webpage will cover the process of utilizing these packages, as well as explaining the underlying calculations.
+This webpage will cover the process of utilizing these packages, as well as explaining the underlying calculations and discuss some of the notable parameters.
 
 <TOCInline toc={props.toc} exclude="Introduction" />
 
 ## Setup
 
 See previous paper for information on setup
+
 
 ## Model Classification
 
@@ -38,7 +39,7 @@ Unsupervised
 
 Note that Sklearn provides too many models and tools to be listed here. For a full list see the following: https://scikit-learn.org/stable/supervised_learning.html
 
-The **Pytorch** package provides the necessary tools to built a Neural Network layer by layer,
+The **Pytorch** package provides the necessary tools to build a Neural Network layer by layer,
 as such it is up to the user to determine what is necessary for the type of Neural Network they intend to design.
 Neural Networks can be either fall under supervised or unsupervised learning based on whether or not the data is labeled.
 Additionally, whether the model is used for classification or regression is also based on how the model is built.
@@ -136,7 +137,7 @@ In terms of parameter tuning the most sensitive parameters are "n_neighbors" and
 - Using 'distance' instead of 'uniform' often leads to more jagged predictions when used with a low 'n_neighbors' value.
 - The value of 'n-neighbor' should be determined based on how sparse the data is, with highly clustered data using higher values.
 
-In terms of tuning these parameters, using a visualization to determine how predicted data point(s) fit can help determine a optimal number of 'n_neighbors' and 'distance'.
+In terms of tuning these parameters, using a visualization to determine how predicted data point(s) fit can help determine a optimal number of 'n_neighbors' and whether weights should be determined by 'distance' or be 'uniform'.
 
 ### Example
 
@@ -150,7 +151,7 @@ rmse_val = [] #to store rmse values for different k
 
 for K in range(20):
     K = K+1
-    model = neighbors.KNeighborsRegressor(n_neighbors = K)
+    model = neighbors.KNeighborsRegressor(n_neighbors = K, weights='distance')
 
     model.fit(X_train, y_train)  #fit the model
     pred=model.predict(X_test) #make prediction on test set
@@ -237,15 +238,17 @@ Parameters of interest for DataLoader() are the following:
 - tensor (required): an n-dimensional tensor.
 - nonlinearity (default: ‘leaky_relu’): Defines the activation function used. For this method the
   only options are ‘leaky_relu’ or ‘relu’ (note: ‘relu’ is short for ‘rectified linear’)
-  nn.linear() applies a linear transformation on input data.
+
+nn.linear() applies a linear transformation on input data.
   Parameters of interest for nn.linear() are the following:
 - in_features (required): size of input.
 - out_features (required): size of output
   torch.nn.functional.relu(X) and torch.nn.functional.sigmoid(X) applies the rectified linear function/sigmoid
   function elementwise onto the tensor X.
-  nn.MSELoss() is a loss function that computes the average of the squared differences between the actual and
-  predicted values.
-  Other loss functions of note include:
+  
+nn.MSELoss() is a loss function that computes the average of the squared differences between the actual and predicted values.
+
+Other loss functions of note include:
 - nn.L1loss() which uses the average of absolute differences.
 - nn.CrossEntropyLoss () which computes the difference of two probability distributions.
 - See the following for a full list: https://pytorch.org/docs/stable/nn.html#loss-functions
@@ -266,6 +269,8 @@ In terms of parameter tuning the most sensitive parameters are 'lr', the number 
 - number of nodes per layer determine the layer's capacity to represent relationships between nodes.
 
 To optimize these parameters it is suggested you use a hyperparameter tuning technique:
+(Note: hyperparameters are values which help determine the model parameters during the model training process. 
+For example, the number of hidden layers, number of nodes and learning rate are hyperparameters, which will determine how the model learns parameters such as weights and biases)
 
 - Bayesian Optimization: builds a probability model of the objective function and uses it to evaluate the hyperparameters.
 - Grid Search: Uses a grid containing a list of hyperparameters and a performance meteric going through each combination to determine what performs the best.
@@ -338,7 +343,11 @@ for epoch in range(num_epochs):
 Data Used: https://apps.who.int/nha/database/Select/Indicators/en
 
 Model documentation: https://scikit-learn.org/
+
 Neural Network documentation: https://pytorch.org/docs/stable/index.html
+
 Model Classification: https://www.datacamp.com/blog/classification-machine-learning
+
 NN Hyperparameter Tuning: https://aws.amazon.com/what-is/hyperparameter-tuning
+
 Random Forest: https://builtin.com/data-science/random-forest-algorithm
